@@ -11,12 +11,10 @@ import {
   TableRow,
   Typography,
   Button,
-  IconButton,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
-  Badge,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -32,7 +30,6 @@ import {
   ArrowRight as ArrowRightIcon,
   CheckCircle as CheckCircleIcon,
   HourglassEmpty as HourglassEmptyIcon,
-  Timer as TimerIcon,
   LunchDining as LunchDiningIcon,
   Warning as WarningIcon,
 } from '@mui/icons-material';
@@ -87,7 +84,6 @@ const AttendancePage: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedFilter, setSelectedFilter] = useState('company');
   const [selectedGroup, setSelectedGroup] = useState('department');
-  const [selectedValue, setSelectedValue] = useState('');
   const [selectedAttendance, setSelectedAttendance] = useState<AttendanceData | null>(null);
 
   const handleDateChange = (direction: 'prev' | 'next') => {

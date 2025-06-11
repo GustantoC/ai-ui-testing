@@ -9,9 +9,6 @@ import {
   CheckCircle, 
   X,
   Filter,
-  Users,
-  Building,
-  MapPin,
   User
 } from "lucide-react";
 import { format, subDays, addDays, isAfter, isSameDay } from "date-fns";
@@ -319,12 +316,39 @@ const mockAttendanceData = [
   }
 ];
 
+interface Employee {
+  id: number;
+  employeeName: string;
+  employeeNo: string;
+  company: string;
+  branch: string;
+  department: string;
+  section: string;
+  shift: string;
+  timeRecords: Array<{ type: string; time: string }>;
+  shiftHour: number;
+  workingHour: number;
+  hoursDifference: number;
+  earlyOT: boolean;
+  paidLunch: boolean;
+  actualOT: number;
+  totalOT: number;
+  preApprOT: number;
+  approvedOT: number;
+  allowance: number;
+  remark: string;
+  status: string;
+  entries?: Array<any>;
+  shiftHours?: number;
+  workingHours?: number;
+}
+
 function App() {
   useEffect(() => {
     document.title = 'Emergent ';
   }, []);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [filters, setFilters] = useState({
@@ -334,7 +358,7 @@ function App() {
     section: ""
   });
   
-  const datePickerRef = useRef(null);
+  const datePickerRef = useRef<HTMLDivElement>(null);
 
   // Close date picker when clicking outside
   useEffect(() => {
@@ -508,8 +532,8 @@ function App() {
                     value={formatDateForInput(selectedDate)}
                     onChange={handleDateSelect}
                     max={formatDateForInput(new Date())}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                    style={{ focusRingColor: '#245AA6' }}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    style={{ '--tw-ring-color': '#245AA6' } as React.CSSProperties}
                   />
                   <div className="flex justify-between mt-3">
                     <button
@@ -561,8 +585,8 @@ function App() {
               <select
                 value={filters.company}
                 onChange={(e) => setFilters({...filters, company: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                style={{ focusRingColor: '#245AA6' }}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{ '--tw-ring-color': '#245AA6' } as React.CSSProperties}
               >
                 <option value="">All Companies</option>
                 {getUniqueOptions('company').map(option => (
@@ -576,8 +600,8 @@ function App() {
               <select
                 value={filters.branch}
                 onChange={(e) => setFilters({...filters, branch: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                style={{ focusRingColor: '#245AA6' }}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{ '--tw-ring-color': '#245AA6' } as React.CSSProperties}
               >
                 <option value="">All Branches</option>
                 {getUniqueOptions('branch').map(option => (
@@ -591,8 +615,8 @@ function App() {
               <select
                 value={filters.department}
                 onChange={(e) => setFilters({...filters, department: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                style={{ focusRingColor: '#245AA6' }}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{ '--tw-ring-color': '#245AA6' } as React.CSSProperties}
               >
                 <option value="">All Departments</option>
                 {getUniqueOptions('department').map(option => (
@@ -606,8 +630,8 @@ function App() {
               <select
                 value={filters.section}
                 onChange={(e) => setFilters({...filters, section: e.target.value})}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                style={{ focusRingColor: '#245AA6' }}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{ '--tw-ring-color': '#245AA6' } as React.CSSProperties}
               >
                 <option value="">All Sections</option>
                 {getUniqueOptions('section').map(option => (
@@ -810,7 +834,7 @@ function App() {
                       <div>
                         <h4 className="font-medium text-gray-900 mb-2">Time Entries</h4>
                         <div className="space-y-1">
-                          {selectedEmployee.entries.map((entry, index) => (
+                          {selectedEmployee?.entries?.map((entry, index) => (
                             <div key={index} className="flex items-center space-x-2">
                               <span className={`px-2 py-1 rounded text-xs font-medium ${
                                 entry.type === 'in' 

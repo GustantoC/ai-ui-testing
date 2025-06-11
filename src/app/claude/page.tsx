@@ -90,6 +90,30 @@ const mockAttendanceData = [
   }
 ];
 
+interface Employee {
+  id: number;
+  employeeName: string;
+  employeeNo: string;
+  company: string;
+  branch: string;
+  department: string;
+  section: string;
+  shift: string;
+  timeRecords: Array<{ type: string; time: string }>;
+  shiftHour: number;
+  workingHour: number;
+  hoursDifference: number;
+  earlyOT: boolean;
+  paidLunch: boolean;
+  actualOT: number;
+  totalOT: number;
+  preApprOT: number;
+  approvedOT: number;
+  allowance: number;
+  remark: string;
+  status: string;
+}
+
 const DailyAttendancePage = () => {
   useEffect(() => {
     document.title = 'Claude';
@@ -102,7 +126,7 @@ const DailyAttendancePage = () => {
     section: ''
   });
   const [groupBy, setGroupBy] = useState('');
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   // Get unique values for filter options
@@ -220,7 +244,7 @@ const DailyAttendancePage = () => {
                     value={filters.company}
                     onChange={(e) => handleFilterChange('company', e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    style={{ focusRingColor: '#245AA6' }}
+                    style={{ '--tw-ring-color': '#245AA6' } as React.CSSProperties}
                   >
                     <option value="">All Companies</option>
                     {filterOptions.companies.map(company => (
@@ -441,23 +465,23 @@ const DailyAttendancePage = () => {
                     <div className="space-y-3">
                       <div>
                         <label className="text-sm font-medium text-gray-500">Employee Name</label>
-                        <p className="text-gray-900">{selectedEmployee.employeeName}</p>
+                        <p className="text-gray-900">{selectedEmployee?.employeeName}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-gray-500">Employee No</label>
-                        <p className="text-gray-900">{selectedEmployee.employeeNo}</p>
+                        <p className="text-gray-900">{selectedEmployee?.employeeNo}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-gray-500">Company</label>
-                        <p className="text-gray-900">{selectedEmployee.company}</p>
+                        <p className="text-gray-900">{selectedEmployee?.company}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-gray-500">Department</label>
-                        <p className="text-gray-900">{selectedEmployee.department}</p>
+                        <p className="text-gray-900">{selectedEmployee?.department}</p>
                       </div>
                       <div>
                         <label className="text-sm font-medium text-gray-500">Section</label>
-                        <p className="text-gray-900">{selectedEmployee.section}</p>
+                        <p className="text-gray-900">{selectedEmployee?.section}</p>
                       </div>
                     </div>
                   </div>

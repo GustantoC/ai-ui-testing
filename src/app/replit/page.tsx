@@ -218,13 +218,11 @@ const Select = ({
   value, 
   onValueChange, 
   disabled = false, 
-  placeholder, 
   children 
 }: { 
   value: string; 
   onValueChange: (value: string) => void; 
   disabled?: boolean; 
-  placeholder?: string;
   children: React.ReactNode;
 }) => (
   <select
